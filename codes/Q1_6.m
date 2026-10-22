@@ -76,24 +76,9 @@ for j = 2:Nt
     dTdt = alpha*lapT - betaAir*(Told-Tinf) - betaPlate*(Told-Tp);
 
     T(1:nActive,j) = Told + dt*dTdt;
-
-    %T(nActive+1:end,j) = nan;
 end
 
-figure;
-hold on;
-timesToPlot = [0.25 0.5 1]*tprint;
-
-for q = 1:numel(timesToPlot)
-    [~,idx] = min(abs(time-timesToPlot(q)));
-    plot(s,T(:,idx),'LineWidth',1.5,'DisplayName',sprintf('time = %.2fs',time(idx)));
-end
-
-xlabel('Distance along filament (m)');
-ylabel('Temperature (°C)');
-title('Filament Temperature Distribution During Printing');
-legend('Location','best');
-grid on;
+%%plot of spatial and temporal distribution of temperature
 
 figure;
 imagesc(time,s,T);
