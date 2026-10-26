@@ -7,53 +7,79 @@ function u = input_func(t,desired_x,desired_y,mode,param)
     Rn = param.Rn;
     Rtn = param.Rtn;
 
-    dddot_coeff = (J*Lm)/(rm*Km);
-    ddot_coeff = (((Lm*J*P)/(Km*rm)) + ((J*Rm)/(Km*rm)));
-    dot_coeff = (Km/rm + (Rm*J*P)/(Km*rm));
+    J = param.J;
+    Lm = param.Lm;
+    Km = param.Km;
+    rm = param.rm;
+    Rm = param.Rm;
+    P = param.P;
+    Q = param.Q;
+    
+    % coefficients needed to compute the 
+    dddot_x_coeff = (J*Lm)/(rm*Km);
+    ddot_x_coeff = (((Lm*J*P)/(Km*rm)) + ((J*Rm)/(Km*rm)));
+    dot_x_coeff = (Km/rm + (Rm*J*P)/(Km*rm));
+    dddot_y_coeff = (J*Lm)/(rm*Km);
+    ddot_y_coeff = (((Lm*J*Q)/(Km*rm)) + ((J*Rm)/(Km*rm)));
+    dot_y_coeff = (Km/rm + (Rm*J*Q)/(Km*rm));
+
+    x_t = desired_x(t);
+    y_t = desired_y(t);
 
     switch mode
         case 'print'
-            u_x = dddot_coeff*desired_x(4) + ddot_coeff*desired_x(3) + dot_coeff*desired_x(2);
-            u_y = dddot_coeff*desired_y(4) + ddot_coeff*desired_y(3) + dot_coeff*desired_y(2);
+            u_x = dddot_x_coeff*x_t(4) + ddot_x_coeff*x_t(3) + dot_x_coeff*x_t(2);
+            u_y = dddot_y_coeff*y_t(4) + ddot_y_coeff*y_t(3) + dot_y_coeff*y_t(2);
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 1;
         case 'stop'
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 0;
         case 'save'
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 0;
         case 'move' % move to wiping location
-            u_x = dddot_coeff*desired_x(4) + ddot_coeff*desired_x(3) + dot_coeff*desired_x(2);
-            u_y = dddot_coeff*desired_y(4) + ddot_coeff*desired_y(3) + dot_coeff*desired_y(2);
+            u_x = dddot_x_coeff*desired_x(4) + ddot_x_coeff*desired_x(3) + dot_x_coeff*desired_x(2);
+            u_y = dddot_y_coeff*desired_y(4) + ddot_y_coeff*desired_y(3) + dot_y_coeff*desired_y(2);
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 0;
         case 'wipe'
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 1;
         case 'cool'
             u_x = 0;
             u_y = 0;
             u_n = 0;
+            u_d = 0;
         case 'load' % reload filament
             u_x = 0;
             u_y = 0;
             u_n = 0;
+            u_d = 0;
         case 'heat'
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 0;
         case 'return' % return to wiping location
-            u_x = dddot_coeff*desired_x(4) + ddot_coeff*desired_x(3) + dot_coeff*desired_x(2);
-            u_y = dddot_coeff*desired_y(4) + ddot_coeff*desired_y(3) + dot_coeff*desired_y(2);
+            u_x = dddot_x_coeff*desired_x(4) + ddot_x_coeff*desired_x(3) + dot_x_coeff*desired_x(2);
+            u_y = dddot_y_coeff*desired_y(4) + ddot_y_coeff*desired_y(3) + dot_y_coeff*desired_y(2);
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 0;
         otherwise
             u_x = 0;
             u_y = 0;
             u_n = 0;
+            u_d = 0;
     end
     u = [u_x;
          u_y;
-         u_n];
+         u_n;
+         u_d];
 end
