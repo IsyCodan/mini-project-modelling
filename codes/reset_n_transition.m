@@ -7,18 +7,22 @@ function [mode, x0, param] = reset_n_transition(mode, x0, t_start, param)
         case 'stop' 
             x0(2) = 0;
             x0(5) = 0;
-            mode = 'save';
-        case 'save'
             param.x_saved = x0(1);
             param.y_saved = x0(4);
-            mode = 'move';
-        case 'move'
+            param.t_saved = t_start;
+            param.d_saved = x0(10);
+            mode = 'park_x';
+        case 'park_x'
+            x0(1) = 0;
+            x0(2) = 0;
+            mode = 'park_y';
+        case 'park_y'
+            x0(4) = 0;
+            x0(5) = 0;
             mode = 'wipe';
         case 'wipe'
             mode = 'cool';
         case 'cool'
-            mode = 'load';
-        case 'load'
             x0(10) = 0;
             mode = 'heat';
         case 'heat'

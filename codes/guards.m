@@ -1,4 +1,4 @@
-function [g,isterminal,direction] = guards(t,x,mode,d_current,param)
+function [g,isterminal,direction] = guards(t,x,mode,param)
 %UNTITLED Summary of this function goes here
 %   define g, where g >= 0
     isterminal = 1; % terminates integration if event function hits zero
@@ -10,7 +10,7 @@ function [g,isterminal,direction] = guards(t,x,mode,d_current,param)
     x_n = x(7:9);
     x_d = x(10);
 
-    epsilon = 1e-4; % small value to account for solver step sizes
+    epsilon = 1e-3; % small value to account for solver step sizes
     
     switch mode
         case 'print'
@@ -22,11 +22,9 @@ function [g,isterminal,direction] = guards(t,x,mode,d_current,param)
         case 'park_y' % park at y = 0
             g = x_y(1);
         case 'wipe'
-            g = (x_d - d_current) - param.L_wipe;
+            g = (x_d - param.d_saved) - param.L_wipe;
         case 'cool'
-            g = x_n(1) - param.T_low ;
-        case 'load' % reload filament
-            g = param.L_filament - x_d;
+            g = x_n(1) - param.T_low;
         case 'heat'
             g = x_n(1) - param.T_high;
         case 'return' % return to saved location

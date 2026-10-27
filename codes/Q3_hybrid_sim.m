@@ -34,10 +34,13 @@ param.T_low = 25; % temperature when nozzle off
 param.T_high = 230; % temperature when nozzle on
 param.L_filament = 2; % length of filament on spool
 param.L_wipe = 1e-2; % length of filament dispensed for wiping
+param.dot_d_standard = 5e-2; % standard extrusion velocity
 
 param.x_saved = 0; % reserved x-parameter for saving locations
 param.y_saved = 0; % reserved y-parameter for saving locations
+param.t_saved = 0; % reserved time parameter to return at stopped printing location
 param.d_saved = 0; % reserved parameter for saving dispensed filament length
+param.park_velocity = 5e-2; % parking velocity
 
 %% Simulation
 % build desired trajectory for x and y
@@ -61,23 +64,23 @@ desired_x_0 = desired_x(0);
 desired_y_0 = desired_y(0);
 
 % initial state
-x0 = [desired_x_0(1) 0 0 desired_y_0(1) 0 0 param.T_high 0 0 0]';
+x0 = [desired_x_0(1) desired_x_0(2) 0 desired_y_0(1) desired_y_0(2) 0 param.T_high sqrt(Rn/Rtn*(T_high-T_e)) 0 0]';
 t_start = 0;
-t_end = 7;
+t_end = 70;
 
 mode = 'print';
 t_log = []; x_log = []; mode_log = [];
 
 while t_start < t_end
     ode_func = @(t,x) sys(x,input_func(t,desired_x,desired_y,mode,param),param);
-    event_func = @(t,x) guards(t,x,mode,param.d_saved,param);
+    event_func = @(t,x) guards(t,x,mode,param);
     
     opts = odeset('Events',event_func, 'MaxStep', 1e-2);
     [t_seq, x_seq, t_of_evt, x_of_event, idx_of_event]= ode45(ode_func, [t_start, t_end], x0, opts);
     
     t_log = [t_log; t_seq];
     x_log = [x_log; x_seq];
-    mode_log = [mode_log, repmat(mode, length(t_seq), 1)];
+    mode_log = [mode_log; repmat(string(mode), length(t_seq), 1)];
 
     t_start = t_seq(end);
     x0 = x_seq(end, :)';

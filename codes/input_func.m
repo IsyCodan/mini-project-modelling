@@ -23,8 +23,8 @@ function u = input_func(t,desired_x,desired_y,mode,param)
     ddot_y_coeff = (((Lm*J*Q)/(Km*rm)) + ((J*Rm)/(Km*rm)));
     dot_y_coeff = (Km/rm + (Rm*J*Q)/(Km*rm));
 
-    x_t = desired_x(t);
-    y_t = desired_y(t);
+    x_t = desired_x(t-param.t_saved);
+    y_t = desired_y(t-param.t_saved);
 
     switch mode
         case 'print'
@@ -37,14 +37,14 @@ function u = input_func(t,desired_x,desired_y,mode,param)
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
-        case 'save'
-            u_x = 0;
+        case 'park_x' % move to wiping location
+            u_x = -dot_x_coeff*param.park_velocity;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
-        case 'move' % move to wiping location
-            u_x = dddot_x_coeff*desired_x(4) + ddot_x_coeff*desired_x(3) + dot_x_coeff*desired_x(2);
-            u_y = dddot_y_coeff*desired_y(4) + ddot_y_coeff*desired_y(3) + dot_y_coeff*desired_y(2);
+        case 'park_y'
+            u_x = 0;
+            u_y = -dot_y_coeff*param.park_velocity;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
         case 'wipe'
@@ -57,19 +57,14 @@ function u = input_func(t,desired_x,desired_y,mode,param)
             u_y = 0;
             u_n = 0;
             u_d = 0;
-        case 'load' % reload filament
-            u_x = 0;
-            u_y = 0;
-            u_n = 0;
-            u_d = 0;
         case 'heat'
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
         case 'return' % return to wiping location
-            u_x = dddot_x_coeff*desired_x(4) + ddot_x_coeff*desired_x(3) + dot_x_coeff*desired_x(2);
-            u_y = dddot_y_coeff*desired_y(4) + ddot_y_coeff*desired_y(3) + dot_y_coeff*desired_y(2);
+            u_x = dot_x_coeff*param.x_saved/sqrt(param.x_saved^2+param.y_saved^2)*param.park_velocity;
+            u_y = dot_y_coeff*param.y_saved/sqrt(param.x_saved^2+param.y_saved^2)*param.park_velocity;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
         otherwise
