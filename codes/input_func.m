@@ -37,6 +37,11 @@ function u = input_func(t,desired_x,desired_y,mode,param)
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
+        case 'park'
+            u_x = -dot_x_coeff*param.park_velocity;
+            u_y = -dot_y_coeff*param.park_velocity;
+            u_n = sqrt(Rn/Rtn*(T_high-T_e));
+            u_d = 0;
         case 'park_x' % move to wiping location
             u_x = -dot_x_coeff*param.park_velocity;
             u_y = 0;
