@@ -138,7 +138,7 @@ close
 w = 650;
 h = 325;
 
-figure; % XY
+figure('Position',[200 200 w w*y_center/x_center]); % XY
 plot(x_log(:,1)*1e2,x_log(:,4)*1e2)
 xlabel('$x\,/\,$cm')
 ylabel('$y\,/\,$cm')
