@@ -85,9 +85,10 @@ imagesc(time,s,T);
 set(gca,'YDir','normal');
 xlabel('Time (s)');
 ylabel('Distance along filament (m)');
-title('Temperature Evolution During Printing and Cooling');
+%title('Temperature Evolution During Printing and Cooling');
 cb = colorbar;
 ylabel(cb,'Temperature (deg C)');
+exportgraphics(gcf, 'plots/pde.pdf','ContentType','vector');
 
 idxPrint = find(time >= tprint,1);
 uniformTolerance = 1;
