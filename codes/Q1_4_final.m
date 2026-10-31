@@ -83,25 +83,31 @@ ur = ux - uy;
 
 %%Circle Plot
 figure;
-plot(x, y);
+plot(x, y, 'LineWidth', 1.5);
+grid on;
 axis equal;
 xlabel('x (m)');
 ylabel('y (m)');
-title("Trajectory to plot");
+exportgraphics(gcf, 'plots/circle.pdf','ContentType','vector');
+%title("Trajectory to plot");
 
 %%Inputs
 
 figure;
-plot(t,ul);
+plot(t,ul,'LineWidth', 1.5);
+grid on;
 xlabel('time (s)');
 ylabel('u_l (V)');
-title("Left Motor Voltage input needed");
+exportgraphics(gcf, 'plots/circle_u_l.pdf','ContentType','vector');
+%title("Left Motor Voltage input needed");
 
 figure;
-plot(t,ur);
+plot(t,ur,'LineWidth', 1.5);
+grid on;
 xlabel('time (s)');
 ylabel('u_r (V)');
-title("Right Motor Voltage input needed");
+exportgraphics(gcf, 'plots/circle_u_r.pdf','ContentType','vector');
+%title("Right Motor Voltage input needed");
 
 
 
