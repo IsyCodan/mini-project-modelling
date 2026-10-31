@@ -7,7 +7,6 @@
     x_y = x(4:6);
     x_n = x(7:9);
     x_d = x(10);
-
     u_x = u(1);
     u_y = u(2);
     u_n = u(3);
@@ -46,6 +45,7 @@
             (u_n-x_n(2))/Ln];
 
     dx_d = u_d*param.dot_d_standard*(1 + sqrt(x_x(2)^2+x_y(2)^2)); % standard filament extrusion plus scaled velocity of printed path  
+    
     dx=[dx_x; 
         dx_y; 
         dx_n;

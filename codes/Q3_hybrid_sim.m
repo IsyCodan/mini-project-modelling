@@ -142,34 +142,49 @@ figure; % XY
 plot(x_log(:,1)*1e2,x_log(:,4)*1e2)
 xlabel('$x\,/\,$cm')
 ylabel('$y\,/\,$cm')
-axis equal
+xlim([-0.1 2e2*x_center+0.1])
+ylim([-0.1 2e2*y_center+0.1])
+grid on
+exportgraphics(gcf, 'plots/xy_movement.pdf','ContentType','vector')
 
-figure; % i_x
+figure('Position',[200 200 w h]); % i_x
 plot(t_log,x_log(:,3))
 xlabel('$t\,/\,$s')
 ylabel('$i_{\rm x}\,/\,$A')
+grid on
+exportgraphics(gcf, 'plots/i_x.pdf','ContentType','vector')
 
-figure; % i_y
+figure('Position',[200 200 w h]); % i_y
 plot(t_log,x_log(:,6))
 xlabel('$t\,/\,$s')
 ylabel('$i_{\rm y}\,/\,$A')
+grid on
+exportgraphics(gcf, 'plots/i_y.pdf','ContentType','vector')
 
-figure; % T_n
+figure('Position',[200 200 w h]); % T_n
 plot(t_log,x_log(:,7))
 xlabel('$t\,/\,$s')
 ylabel('$T_{\rm n}\,/\,^\circ$C')
+grid on
+exportgraphics(gcf, 'plots/T_n.pdf','ContentType','vector')
 
-figure; % u_c
+figure('Position',[200 200 w h]); % u_c
 plot(t_log,x_log(:,8))
 xlabel('$t\,/\,$s')
 ylabel('$u_{\rm c}\,/\,$V')
+grid on
+exportgraphics(gcf, 'plots/u_c.pdf','ContentType','vector')
 
-figure; % i_n
+figure('Position',[200 200 w h]); % i_n
 plot(t_log,x_log(:,9))
 xlabel('$t\,/\,$s')
 ylabel('$i_{\rm n}\,/\,$A')
+grid on
+exportgraphics(gcf, 'plots/i_n.pdf','ContentType','vector')
 
-figure; % d_p
+figure('Position',[200 200 w h]); % d_p
 plot(t_log,x_log(:,10))
 xlabel('$t\,/\,$s')
 ylabel('$d_{\rm p}\,/\,$m')
+grid on
+exportgraphics(gcf, 'plots/d_p.pdf','ContentType','vector')

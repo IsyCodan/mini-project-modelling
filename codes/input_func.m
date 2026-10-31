@@ -27,47 +27,47 @@ function u = input_func(t,desired_x,desired_y,mode,param)
     y_t = desired_y(t-param.t_saved);
 
     switch mode
-        case 'print'
+        case 'print' % driving x and y, nozzle high, extruding on
             u_x = dddot_x_coeff*x_t(4) + ddot_x_coeff*x_t(3) + dot_x_coeff*x_t(2);
             u_y = dddot_y_coeff*y_t(4) + ddot_y_coeff*y_t(3) + dot_y_coeff*y_t(2);
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 1;
-        case 'stop'
+        case 'stop' % nozzle high
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
-        case 'park'
+        case 'park' % driving x and y, nozzle high
             u_x = -dot_x_coeff*param.park_velocity;
             u_y = -dot_y_coeff*param.park_velocity;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
-        case 'park_x' % move to wiping location
+        case 'park_x' % driving x, nozzle high
             u_x = -dot_x_coeff*param.park_velocity;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
-        case 'park_y'
+        case 'park_y' % driving y, nozzle high
             u_x = 0;
             u_y = -dot_y_coeff*param.park_velocity;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
-        case 'wipe'
+        case 'wipe' % nozzle high, extruding on
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 1;
-        case 'cool'
+        case 'cool' % no input
             u_x = 0;
             u_y = 0;
             u_n = 0;
             u_d = 0;
-        case 'heat'
+        case 'heat' % nozzle high
             u_x = 0;
             u_y = 0;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
             u_d = 0;
-        case 'return' % return to wiping location
+        case 'return' % driving x and y, nozzle high
             u_x = dot_x_coeff*param.x_saved/sqrt(param.x_saved^2+param.y_saved^2)*param.park_velocity;
             u_y = dot_y_coeff*param.y_saved/sqrt(param.x_saved^2+param.y_saved^2)*param.park_velocity;
             u_n = sqrt(Rn/Rtn*(T_high-T_e));
